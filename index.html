@@ -1,47 +1,637 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; -webkit-text-stroke: #000000}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.26); -webkit-text-stroke: rgba(0, 0, 0, 0.26)}
-    span.s1 {font-kerning: none}
-    span.s2 {font-kerning: none; color: rgba(0, 0, 0, 0.85); background-color: #a4a4a4; -webkit-text-stroke: 0px rgba(0, 0, 0, 0.85)}
-    span.s3 {font: 12.0px Times; font-kerning: none}
-    span.s4 {font-kerning: none; color: rgba(0, 0, 0, 0.26); background-color: #a4a4a4; -webkit-text-stroke: 0px rgba(0, 0, 0, 0.26)}
-    span.s5 {font-kerning: none; background-color: #a4a4a4}
-    span.s6 {font: 12.0px Times; font-kerning: none; -webkit-text-stroke: 0px #000000}
-    span.s7 {text-decoration: underline ; font-kerning: none; color: #0000e3; -webkit-text-stroke: 0px #0000e3}
-  </style>
-</head>
-<body>
-<p class="p1"><span class="s1">Camera party trick</span></p>
-<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; font: 24.0px Times; -webkit-text-stroke: #000000"><span class="s1"><b>OWNER</b><b></b></span></h1>
-<p class="p1"><span class="s1">Snap a photo or pick one from your device and the app invents a playful prediction for tonight. It is not real. It is only for fun.</span></p>
-<p class="p3"><span class="s1"><b>Privacy note:</b> Browsers cannot reveal everything inside a person's media library from a single permission. This app can only use the live camera or a file the user explicitly selects.</span></p>
-<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px Times; -webkit-text-stroke: #000000"><span class="s1"><b>Capture</b><b></b></span></h2>
-<p class="p3"><span class="s1">Waiting</span></p>
-<p class="p1"><span class="s1">No photo yet</span></p>
-<p class="p3"><span class="s1">Use the camera or choose an image file.</span></p>
-<p class="p5"><span class="s2">Enable Camera</span><span class="s3"> </span><span class="s4">Take Picture</span><span class="s3"> Choose Photo</span></p>
-<p class="p1"><span class="s1">Camera permission is requested only when you tap "Enable Camera".</span></p>
-<p class="p1"><span class="s1">Prediction</span></p>
-<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px Times; -webkit-text-stroke: #000000"><span class="s1"><b>Prediction locked</b><b></b></span></h2>
-<p class="p1"><span class="s1">Without sending the photo, the app cannot predict tonight's fake reading.</span></p>
-<p class="p3"><span class="s1">Upload first Not real</span></p>
-<p class="p6"><span class="s5">Another Random Reading</span></p>
-<p class="p1"><span class="s1">Owner Delivery</span></p>
-<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px Times; -webkit-text-stroke: #000000"><span class="s1"><b>Send the photo</b><b></b></span></h2>
-<p class="p1"><span class="s1"><span class="Apple-converted-space"> </span>Without sending the photo, it cannot predict. The<span class="Apple-converted-space">  </span>prediction is shown only after that upload step is completed.</span></p>
-<p class="p3"><span class="s1">I agree to upload .</span></p>
-<p class="p3"><span class="s1">Explicit consent required Owner review only</span></p>
-<p class="p6"><span class="s5">Send Photo to Owner</span><span class="s6"> <a href="file:///owner.html"><span class="s7">Ow</span></a></span></p>
-<p class="p1"><span class="s1">Upload is disabled until there is a photo and the consent box is checked.</span></p>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OWNER</title>
+    <style>
+      :root {
+        --bg: #08111f;
+        --panel: rgba(8, 17, 31, 0.78);
+        --panel-strong: rgba(11, 23, 39, 0.94);
+        --text: #f5efe2;
+        --muted: #b9c3d6;
+        --accent: #ff8f3f;
+        --accent-soft: #ffd4a3;
+        --line: rgba(255, 255, 255, 0.12);
+        --success: #73e2b4;
+        --idle: #9db3cf;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(255, 143, 63, 0.26), transparent 28%),
+          radial-gradient(circle at top right, rgba(74, 144, 226, 0.22), transparent 24%),
+          linear-gradient(140deg, #050914 0%, var(--bg) 45%, #10243a 100%);
+      }
+
+      .shell {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 32px 0 48px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        padding: 28px;
+        margin-bottom: 22px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.74rem;
+        color: var(--accent-soft);
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 12px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.8rem, 7vw, 4.8rem);
+        line-height: 0.95;
+      }
+
+      .intro {
+        max-width: 60ch;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 1.03rem;
+      }
+
+      .notice {
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 143, 63, 0.28);
+        background: rgba(255, 143, 63, 0.09);
+        color: var(--accent-soft);
+        line-height: 1.45;
+      }
+
+      .studio {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 22px;
+      }
+
+      .viewer,
+      .reading,
+      .delivery {
+        padding: 22px;
+      }
+
+      .side-stack {
+        display: grid;
+        gap: 22px;
+      }
+
+      .viewer-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 0.84rem;
+        border: 1px solid var(--line);
+      }
+
+      .status.idle {
+        color: var(--idle);
+      }
+
+      .status.live {
+        color: var(--success);
+        background: rgba(115, 226, 180, 0.08);
+      }
+
+      .status.blocked {
+        color: #ffb4b4;
+        background: rgba(255, 92, 92, 0.08);
+      }
+
+      .camera-frame {
+        position: relative;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
+          linear-gradient(160deg, rgba(255, 143, 63, 0.18), rgba(45, 94, 142, 0.2));
+      }
+
+      #cameraFeed,
+      #photoPreview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .empty-state {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 24px;
+        color: var(--muted);
+        background: linear-gradient(180deg, rgba(8, 17, 31, 0.12), rgba(8, 17, 31, 0.46));
+      }
+
+      .empty-state p {
+        margin-bottom: 6px;
+        color: var(--text);
+        font-size: 1.1rem;
+      }
+
+      .controls,
+      .delivery-actions,
+      .result-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .controls {
+        margin-top: 16px;
+      }
+
+      button,
+      .upload-btn {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        color: #07101d;
+        background: linear-gradient(135deg, #ffd4a3, var(--accent));
+        transition: transform 0.18s ease, opacity 0.18s ease;
+      }
+
+      button:hover,
+      .upload-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.45;
+        transform: none;
+      }
+
+      #photoInput {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .helper,
+      .prediction-body {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .reading {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .reading h2,
+      .delivery h2 {
+        margin-bottom: 12px;
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      .reading h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .delivery h2 {
+        font-size: 2rem;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--accent-soft);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .consent-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 18px 0;
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+      }
+
+      .consent-row input {
+        margin-top: 4px;
+        accent-color: var(--accent);
+      }
+
+      .owner-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--text);
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      @media (max-width: 860px) {
+        .shell {
+          width: min(100vw - 18px, 1120px);
+          padding-top: 16px;
+        }
+
+        .studio {
+          grid-template-columns: 1fr;
+        }
+
+        .hero,
+        .viewer,
+        .reading,
+        .delivery {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero card">
+        <p class="eyebrow">Camera party trick</p>
+        <h1>OWNER</h1>
+        <p class="intro">
+          Snap a photo or pick one from your device and the app invents a playful prediction for tonight.
+          It is not real. It is only for fun.
+        </p>
+        <div class="notice">
+          <strong>Privacy note:</strong>
+          Browsers cannot reveal everything inside a person's media library from a single permission.
+          This app can only use the live camera or a file the user explicitly selects.
+        </div>
+      </section>
+
+      <section class="studio">
+        <div class="viewer card">
+          <div class="viewer-head">
+            <h2>Capture</h2>
+            <span id="permissionStatus" class="status idle">Waiting</span>
+          </div>
+
+          <div class="camera-frame">
+            <video id="cameraFeed" playsinline autoplay muted hidden></video>
+            <img id="photoPreview" alt="Selected or captured preview" hidden />
+            <div class="empty-state" id="emptyState">
+              <div>
+                <p>No photo yet</p>
+                <span>Use the camera or choose an image file.</span>
+              </div>
+            </div>
+          </div>
+
+          <canvas id="captureCanvas" hidden></canvas>
+
+          <div class="controls">
+            <button id="startCameraBtn" type="button">Enable Camera</button>
+            <button id="takePhotoBtn" type="button" disabled>Take Picture</button>
+            <label class="upload-btn" for="photoInput">Choose Photo</label>
+            <input id="photoInput" type="file" accept="image/*" />
+          </div>
+
+          <p class="helper" id="helperText">
+            Camera permission is requested only when you tap "Enable Camera".
+          </p>
+        </div>
+
+        <div class="side-stack">
+          <div class="reading card">
+            <p class="eyebrow">Prediction</p>
+            <h2 id="predictionTitle">Prediction locked</h2>
+            <p id="predictionBody" class="prediction-body">
+              Without sending the photo, the app cannot predict tonight's fake reading.
+            </p>
+            <div class="result-meta">
+              <span class="tag" id="vibeTag">Upload first</span>
+              <span class="tag">Not real</span>
+            </div>
+            <button id="shuffleBtn" type="button" disabled>Another Random Reading</button>
+          </div>
+
+          <div class="delivery card">
+            <p class="eyebrow">Owner Delivery</p>
+            <h2>Send the photo</h2>
+            <p class="prediction-body">
+              Without sending the photo, it cannot predict. The fake prediction is shown only after that upload step is completed.
+            </p>
+
+            <label class="consent-row" for="uploadConsent">
+              <input id="uploadConsent" type="checkbox" />
+              <span>I agree to upload this photo to the app owner.</span>
+            </label>
+
+            <div class="result-meta">
+              <span class="tag">Explicit consent required</span>
+              <span class="tag">Owner review only</span>
+            </div>
+
+            <div class="delivery-actions">
+              <button id="uploadBtn" type="button" disabled>Send Photo to Owner</button>
+              <a class="owner-link" href="/owner.html" target="_blank" rel="noreferrer">Open Owner Inbox</a>
+            </div>
+
+            <p class="helper" id="uploadStatus">
+              Upload is disabled until there is a photo and the consent box is checked.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const startCameraBtn = document.getElementById("startCameraBtn");
+      const takePhotoBtn = document.getElementById("takePhotoBtn");
+      const shuffleBtn = document.getElementById("shuffleBtn");
+      const photoInput = document.getElementById("photoInput");
+      const cameraFeed = document.getElementById("cameraFeed");
+      const photoPreview = document.getElementById("photoPreview");
+      const emptyState = document.getElementById("emptyState");
+      const captureCanvas = document.getElementById("captureCanvas");
+      const permissionStatus = document.getElementById("permissionStatus");
+      const helperText = document.getElementById("helperText");
+      const predictionTitle = document.getElementById("predictionTitle");
+      const predictionBody = document.getElementById("predictionBody");
+      const vibeTag = document.getElementById("vibeTag");
+      const uploadConsent = document.getElementById("uploadConsent");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const uploadStatus = document.getElementById("uploadStatus");
+
+      const predictions = [
+        {
+          title: "A dramatic snack decision",
+          body: "Tonight you will spend too long choosing between two snacks, then act like the final pick changed your destiny.",
+          vibe: "Snack omen",
+        },
+        {
+          title: "One message becomes a full conversation",
+          body: "A quick check-in will turn into a longer-than-expected chat, and you will secretly enjoy it.",
+          vibe: "Social spark",
+        },
+        {
+          title: "A tiny victory appears",
+          body: "You will fix or find something small tonight, and the satisfaction will be much bigger than the task itself.",
+          vibe: "Mini win",
+        },
+        {
+          title: "Late-night playlist moment",
+          body: "One song will hit unusually hard tonight, and for a few minutes you will feel like the main character.",
+          vibe: "Mood shift",
+        },
+        {
+          title: "Unexpected craving",
+          body: "Tonight your brain will suddenly demand a very specific food, and resisting it will become the evening's challenge.",
+          vibe: "Hunger plot",
+        },
+        {
+          title: "A memory resurfaces",
+          body: "Something ordinary will remind you of an older moment tonight, and you will pause longer than expected.",
+          vibe: "Soft nostalgia",
+        },
+        {
+          title: "Plan drift",
+          body: "Your original plan for tonight will change slightly, but the improvised version ends up being more fun.",
+          vibe: "Chaotic good",
+        },
+        {
+          title: "You notice something funny",
+          body: "Tonight you will catch a detail other people miss and laugh about it more than anyone else.",
+          vibe: "Inside joke energy",
+        },
+      ];
+
+      let activeStream = null;
+      let hasImage = false;
+      let latestImageDataUrl = "";
+      let predictionUnlocked = false;
+
+      function setStatus(mode, label) {
+        permissionStatus.className = `status ${mode}`;
+        permissionStatus.textContent = label;
+      }
+
+      function stopStream() {
+        if (!activeStream) {
+          return;
+        }
+
+        activeStream.getTracks().forEach((track) => track.stop());
+        activeStream = null;
+      }
+
+      function updatePrediction() {
+        if (!predictionUnlocked) {
+          predictionTitle.textContent = "Prediction locked";
+          predictionBody.textContent = hasImage
+            ? "Without sending the photo, the app cannot predict tonight's fake reading."
+            : "Capture or choose a photo first, then send it to unlock the fake prediction.";
+          vibeTag.textContent = hasImage ? "Waiting for upload" : "Upload first";
+          shuffleBtn.disabled = true;
+          return;
+        }
+
+        const pick = predictions[Math.floor(Math.random() * predictions.length)];
+        predictionTitle.textContent = pick.title;
+        predictionBody.textContent = `${pick.body} This is not real. It is just for fun.`;
+        vibeTag.textContent = pick.vibe;
+        shuffleBtn.disabled = false;
+      }
+
+      function syncUploadButton() {
+        const allowed = hasImage && uploadConsent.checked;
+        uploadBtn.disabled = !allowed;
+
+        if (!hasImage) {
+          uploadStatus.textContent = "Upload is disabled until there is a photo and the consent box is checked.";
+          return;
+        }
+
+        if (!uploadConsent.checked) {
+          uploadStatus.textContent = "A photo is ready. Check the consent box if you want to send it to the app owner.";
+          return;
+        }
+
+        uploadStatus.textContent = "Consent is active. Press \"Send Photo to Owner\" to upload this photo to the server.";
+      }
+
+      function showImage(src) {
+        latestImageDataUrl = src;
+        predictionUnlocked = false;
+        hasImage = true;
+        photoPreview.src = src;
+        photoPreview.hidden = false;
+        cameraFeed.hidden = true;
+        emptyState.hidden = true;
+        syncUploadButton();
+        updatePrediction();
+      }
+
+      async function startCamera() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          setStatus("blocked", "Unsupported");
+          helperText.textContent = "This browser does not support live camera access.";
+          return;
+        }
+
+        stopStream();
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "user" },
+            audio: false,
+          });
+
+          activeStream = stream;
+          cameraFeed.srcObject = stream;
+          cameraFeed.hidden = false;
+          photoPreview.hidden = true;
+          emptyState.hidden = true;
+          takePhotoBtn.disabled = false;
+          setStatus("live", "Camera Live");
+          helperText.textContent = "Camera access is active. The app still cannot browse the rest of the device gallery.";
+        } catch (error) {
+          setStatus("blocked", "Denied");
+          takePhotoBtn.disabled = true;
+          helperText.textContent = error && error.name === "NotAllowedError"
+            ? "Camera permission was denied."
+            : "Camera could not be started on this device.";
+        }
+      }
+
+      function takePhoto() {
+        if (!cameraFeed.videoWidth || !cameraFeed.videoHeight) {
+          helperText.textContent = "Wait for the camera preview to load, then try again.";
+          return;
+        }
+
+        captureCanvas.width = cameraFeed.videoWidth;
+        captureCanvas.height = cameraFeed.videoHeight;
+        const context = captureCanvas.getContext("2d");
+        context.drawImage(cameraFeed, 0, 0, captureCanvas.width, captureCanvas.height);
+        showImage(captureCanvas.toDataURL("image/png"));
+        helperText.textContent = "Photo captured locally in the browser.";
+      }
+
+      function handleFileSelection(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) {
+          return;
+        }
+
+        stopStream();
+        takePhotoBtn.disabled = true;
+        setStatus("idle", "Photo Loaded");
+        helperText.textContent = "Only the image you selected is available to the app. Nothing else in the gallery is exposed.";
+
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          showImage(String(reader.result));
+        });
+        reader.readAsDataURL(file);
+      }
+
+      async function uploadPhoto() {
+        if (!hasImage || !uploadConsent.checked || !latestImageDataUrl) {
+          syncUploadButton();
+          return;
+        }
+
+        uploadBtn.disabled = true;
+        uploadStatus.textContent = "Uploading photo to the owner inbox...";
+
+        try {
+          const response = await fetch("/api/uploads", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ imageDataUrl: latestImageDataUrl }),
+          });
+
+          const payload = await response.json();
+          if (!response.ok) {
+            throw new Error(payload.error || "Upload failed.");
+          }
+
+          predictionUnlocked = true;
+          uploadConsent.checked = false;
+          uploadStatus.textContent = `Uploaded successfully. File saved as ${payload.filename}.`;
+          syncUploadButton();
+          updatePrediction();
+        } catch (error) {
+          uploadStatus.textContent = error && error.message ? error.message : "Upload failed.";
+          syncUploadButton();
+        }
+      }
+
+      startCameraBtn.addEventListener("click", startCamera);
+      takePhotoBtn.addEventListener("click", takePhoto);
+      photoInput.addEventListener("change", handleFileSelection);
+      shuffleBtn.addEventListener("click", updatePrediction);
+      uploadConsent.addEventListener("change", syncUploadButton);
+      uploadBtn.addEventListener("click", uploadPhoto);
+      window.addEventListener("beforeunload", stopStream);
+
+      updatePrediction();
+      syncUploadButton();
+    </script>
+  </body>
 </html>

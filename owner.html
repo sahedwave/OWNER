@@ -4,7 +4,146 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OWNER Inbox</title>
-    <link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        --bg: #08111f;
+        --panel: rgba(8, 17, 31, 0.78);
+        --panel-strong: rgba(11, 23, 39, 0.94);
+        --text: #f5efe2;
+        --muted: #b9c3d6;
+        --accent: #ff8f3f;
+        --accent-soft: #ffd4a3;
+        --line: rgba(255, 255, 255, 0.12);
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(255, 143, 63, 0.26), transparent 28%),
+          radial-gradient(circle at top right, rgba(74, 144, 226, 0.22), transparent 24%),
+          linear-gradient(140deg, #050914 0%, var(--bg) 45%, #10243a 100%);
+      }
+
+      .shell {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 32px 0 48px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+      }
+
+      .hero,
+      .inbox {
+        padding: 22px;
+      }
+
+      .hero {
+        margin-bottom: 22px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.74rem;
+        color: var(--accent-soft);
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 12px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.4rem, 6vw, 4rem);
+        line-height: 0.95;
+      }
+
+      .intro,
+      .helper {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .viewer-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        color: #07101d;
+        background: linear-gradient(135deg, #ffd4a3, var(--accent));
+      }
+
+      .upload-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .upload-card {
+        overflow: hidden;
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: var(--panel-strong);
+      }
+
+      .upload-card img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+      }
+
+      .upload-copy {
+        padding: 14px;
+      }
+
+      .upload-copy p {
+        margin-bottom: 8px;
+        color: var(--muted);
+        word-break: break-word;
+      }
+
+      @media (max-width: 860px) {
+        .shell {
+          width: min(100vw - 18px, 1120px);
+          padding-top: 16px;
+        }
+
+        .hero,
+        .inbox {
+          padding: 18px;
+        }
+      }
+    </style>
   </head>
   <body>
     <main class="shell">
@@ -27,6 +166,63 @@
       </section>
     </main>
 
-    <script type="module" src="owner.js"></script>
+    <script>
+      const refreshBtn = document.getElementById("refreshBtn");
+      const ownerStatus = document.getElementById("ownerStatus");
+      const uploadGrid = document.getElementById("uploadGrid");
+
+      function renderUploads(items) {
+        uploadGrid.innerHTML = "";
+
+        if (!items.length) {
+          ownerStatus.textContent = "No uploads yet.";
+          return;
+        }
+
+        ownerStatus.textContent = `${items.length} upload${items.length === 1 ? "" : "s"} stored on the server.`;
+
+        items.forEach((item) => {
+          const card = document.createElement("article");
+          card.className = "upload-card";
+
+          const image = document.createElement("img");
+          image.src = item.url;
+          image.alt = `Uploaded on ${item.createdAt}`;
+
+          const copy = document.createElement("div");
+          copy.className = "upload-copy";
+
+          const name = document.createElement("p");
+          name.textContent = item.filename;
+
+          const stamp = document.createElement("p");
+          stamp.textContent = new Date(item.createdAt).toLocaleString();
+
+          copy.append(name, stamp);
+          card.append(image, copy);
+          uploadGrid.append(card);
+        });
+      }
+
+      async function loadUploads() {
+        ownerStatus.textContent = "Loading uploads...";
+
+        try {
+          const response = await fetch("/api/uploads");
+          const payload = await response.json();
+
+          if (!response.ok) {
+            throw new Error(payload.error || "Could not load uploads.");
+          }
+
+          renderUploads(payload.uploads || []);
+        } catch (error) {
+          ownerStatus.textContent = error && error.message ? error.message : "Could not load uploads.";
+        }
+      }
+
+      refreshBtn.addEventListener("click", loadUploads);
+      loadUploads();
+    </script>
   </body>
 </html>

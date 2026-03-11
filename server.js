@@ -19,6 +19,15 @@ const MIME_TYPES = {
   ".webp": "image/webp",
 };
 
+const STATIC_ROUTES = new Map([
+  ["/", path.join(ROOT_DIR, "index.html")],
+  ["/index.html", path.join(ROOT_DIR, "index.html")],
+  ["/styles.css", path.join(ROOT_DIR, "styles.css")],
+  ["/main.js", path.join(ROOT_DIR, "main.js")],
+  ["/owner.html", path.join(ROOT_DIR, "owner.html")],
+  ["/owner.js", path.join(ROOT_DIR, "owner.js")],
+]);
+
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
 function sendJson(response, statusCode, payload) {
@@ -131,6 +140,12 @@ function resolveStaticPath(urlPath) {
 
 const server = http.createServer((request, response) => {
   const requestUrl = new URL(request.url, `http://${request.headers.host || "localhost"}`);
+
+  const exactStaticPath = STATIC_ROUTES.get(requestUrl.pathname);
+  if (request.method === "GET" && exactStaticPath) {
+    sendFile(response, exactStaticPath);
+    return;
+  }
 
   if (request.method === "GET" && requestUrl.pathname === "/healthz") {
     sendJson(response, 200, { ok: true });
