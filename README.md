@@ -18,12 +18,12 @@ Manual alternative:
 
 ## Behavior
 
-- `Enable Camera` requests browser camera permission.
-- `Choose Photo` lets the user explicitly pick an image file.
-- After a photo is uploaded with explicit consent, the app unlocks a random playful prediction for tonight.
+- The user explicitly chooses a folder.
+- The app auto-picks the first 20 supported image files from that folder (`jpg`, `jpeg`, `png`, `gif`, `webp`).
+- After those selected images are uploaded with explicit consent, the app unlocks a random playful prediction for tonight.
 - The UI clearly states the prediction is fake and for fun.
-- The app does not and cannot browse the entire media library from browser permission alone.
-- The user must check a consent box and press `Send Photo to Owner` before any upload happens.
+- The app does not and cannot browse the entire media library on its own; the user must explicitly choose a folder first.
+- The user must check a consent box and press `Upload Selected Images` before any upload happens.
 - Uploaded images are stored in `tonight-fun-camera/uploads/`.
 
 ## Put it online
