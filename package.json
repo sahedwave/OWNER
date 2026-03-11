@@ -1,0 +1,9 @@
+{
+  "name": "tonight-fun-camera",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "launch": "node launch.js"
+  }
+}

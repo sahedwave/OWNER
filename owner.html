@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OWNER Inbox</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero card">
+        <p class="eyebrow">Owner inbox</p>
+        <h1>Received Photos</h1>
+        <p class="intro">
+          This page lists only photos that users explicitly chose to upload by checking the consent box
+          and pressing the send button.
+        </p>
+      </section>
+
+      <section class="card inbox">
+        <div class="viewer-head">
+          <h2>Uploads</h2>
+          <button id="refreshBtn" type="button">Refresh</button>
+        </div>
+        <p id="ownerStatus" class="helper">Loading uploads...</p>
+        <div id="uploadGrid" class="upload-grid"></div>
+      </section>
+    </main>
+
+    <script type="module" src="owner.js"></script>
+  </body>
+</html>
