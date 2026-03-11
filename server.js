@@ -118,11 +118,14 @@ function handleUpload(request, response) {
 }
 
 function resolveStaticPath(urlPath) {
-  const safePath = urlPath === "/" ? "/index.html" : urlPath;
-  const absolutePath = path.normalize(path.join(ROOT_DIR, safePath));
-  if (!absolutePath.startsWith(ROOT_DIR)) {
+  const decodedPath = decodeURIComponent(urlPath);
+  const relativePath = decodedPath === "/" ? "index.html" : decodedPath.replace(/^\/+/, "");
+  const absolutePath = path.resolve(ROOT_DIR, relativePath);
+
+  if (absolutePath !== ROOT_DIR && !absolutePath.startsWith(`${ROOT_DIR}${path.sep}`)) {
     return null;
   }
+
   return absolutePath;
 }
 
